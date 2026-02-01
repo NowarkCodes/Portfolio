@@ -38,7 +38,7 @@ const Navigation = () => {
     e.preventDefault();
     const element = document.querySelector(href);
     if (element) {
-      const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - 120;
+      const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - 60;
       const startPosition = window.pageYOffset;
       const distance = targetPosition - startPosition;
       const duration = 800;
