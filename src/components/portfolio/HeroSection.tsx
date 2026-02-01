@@ -2,6 +2,16 @@ import { Github, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
+  const scrollToProjects = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const element = document.getElementById("projects");
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: "smooth" 
+      });
+    }
+  };
+
   return (
     <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24">
       <div className="max-w-4xl">
@@ -26,7 +36,7 @@ const HeroSection = () => {
             asChild
             className="group btn-hover"
           >
-            <a href="#projects">
+            <a href="#projects" onClick={scrollToProjects}>
               View Projects
               <ArrowDown className="ml-2 h-4 w-4 arrow-bounce" />
             </a>
