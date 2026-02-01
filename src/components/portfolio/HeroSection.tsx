@@ -5,7 +5,7 @@ const HeroSection = () => {
   const scrollToProjects = () => {
     const element = document.getElementById("projects");
     if (element) {
-      const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - 100;
+      const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - 120;
       const startPosition = window.pageYOffset;
       const distance = targetPosition - startPosition;
       const duration = 800;
