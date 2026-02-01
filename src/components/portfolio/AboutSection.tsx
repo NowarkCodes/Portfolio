@@ -25,7 +25,7 @@ const AboutSection = () => {
             "space-y-6 text-muted-foreground leading-relaxed reveal",
             isVisible && "active"
           )}
-          style={{ transitionDelay: "150ms" }}
+          style={{ transitionDelay: "200ms" }}
         >
           <p>
             I approach engineering as a craft—every system I build should be robust, 

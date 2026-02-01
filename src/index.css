@@ -60,7 +60,21 @@
     /* Custom shadows for obsidian theme */
     --shadow-subtle: 0 2px 8px -2px hsl(0 0% 0% / 0.4);
     --shadow-card: 0 4px 12px -4px hsl(0 0% 0% / 0.5);
-    --shadow-lift: 0 8px 24px -8px hsl(0 0% 0% / 0.6);
+    --shadow-lift: 0 12px 32px -8px hsl(0 0% 0% / 0.5), 0 2px 8px hsl(215 16% 47% / 0.1);
+
+    /* Easing curves - natural motion physics */
+    --ease-entrance: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-interactive: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Durations */
+    --duration-fast: 200ms;
+    --duration-interactive: 300ms;
+    --duration-normal: 400ms;
+    --duration-smooth: 500ms;
+    --duration-entrance: 600ms;
+    --duration-slow: 800ms;
   }
 
   .dark {
@@ -116,6 +130,7 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
   }
 
   body {
@@ -123,16 +138,39 @@
   }
 }
 
+/* Cursor glow effect - very subtle ambient light that follows cursor */
+.cursor-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    hsl(var(--primary) / 0.03) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 300ms var(--ease-entrance);
+}
+
+.cursor-glow.active {
+  opacity: 1;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
   
-  /* Scroll reveal base state */
+  /* Scroll reveal base state - smoother with proper easing */
   .reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 400ms ease-out, transform 400ms ease-out;
+    transform: translateY(40px);
+    transition: 
+      opacity var(--duration-entrance) var(--ease-entrance),
+      transform var(--duration-entrance) var(--ease-entrance);
   }
   
   .reveal.active {
@@ -143,8 +181,10 @@
   /* Reveal from left for experience items */
   .reveal-left {
     opacity: 0;
-    transform: translateX(-20px);
-    transition: opacity 350ms ease-out, transform 350ms ease-out;
+    transform: translateX(-30px);
+    transition: 
+      opacity var(--duration-smooth) var(--ease-entrance),
+      transform var(--duration-smooth) var(--ease-entrance);
   }
   
   .reveal-left.active {
@@ -152,23 +192,39 @@
     transform: translateX(0);
   }
   
-  /* Fade in animation for hero entrance */
+  /* Fade in animation for hero entrance - cinematic timing */
   .animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
+    animation: fadeIn var(--duration-smooth) var(--ease-entrance) forwards;
   }
   
   .animate-fade-in-up {
-    animation: fadeInUp 0.4s ease-out forwards;
+    animation: fadeInUp var(--duration-slow) var(--ease-entrance) forwards;
     opacity: 0;
   }
   
-  /* Stagger delay utilities */
-  .animate-delay-100 {
-    animation-delay: 100ms;
+  /* Hero-specific entrance animations */
+  .hero-name {
+    animation: fadeInUp 800ms var(--ease-entrance) forwards;
   }
   
-  .animate-delay-150 {
-    animation-delay: 150ms;
+  .hero-tagline {
+    animation: fadeInUp 700ms var(--ease-entrance) 300ms forwards;
+    opacity: 0;
+  }
+  
+  .hero-description {
+    animation: fadeInUp 600ms var(--ease-entrance) 500ms forwards;
+    opacity: 0;
+  }
+  
+  .hero-cta {
+    animation: fadeInUp 500ms var(--ease-bounce) 700ms forwards;
+    opacity: 0;
+  }
+  
+  /* Stagger delay utilities - slightly longer for smoother feel */
+  .animate-delay-100 {
+    animation-delay: 100ms;
   }
   
   .animate-delay-200 {
@@ -183,45 +239,67 @@
     animation-delay: 400ms;
   }
   
-  /* Stagger utilities for child elements */
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+  
+  .animate-delay-600 {
+    animation-delay: 600ms;
+  }
+  
+  .animate-delay-700 {
+    animation-delay: 700ms;
+  }
+  
+  /* Stagger utilities for child elements - rhythmic delays */
   .stagger-item { transition-delay: 0ms; }
   .stagger-item:nth-child(1) { transition-delay: 0ms; }
-  .stagger-item:nth-child(2) { transition-delay: 80ms; }
-  .stagger-item:nth-child(3) { transition-delay: 100ms; }
-  .stagger-item:nth-child(4) { transition-delay: 160ms; }
-  .stagger-item:nth-child(5) { transition-delay: 200ms; }
-  .stagger-item:nth-child(6) { transition-delay: 240ms; }
+  .stagger-item:nth-child(2) { transition-delay: 100ms; }
+  .stagger-item:nth-child(3) { transition-delay: 180ms; }
+  .stagger-item:nth-child(4) { transition-delay: 260ms; }
+  .stagger-item:nth-child(5) { transition-delay: 340ms; }
+  .stagger-item:nth-child(6) { transition-delay: 420ms; }
   
-  /* Hover lift effect for cards */
+  /* Hover lift effect for cards - bouncy, satisfying feel */
   .hover-lift {
-    transition: transform 300ms ease-out, box-shadow 300ms ease-out, border-color 250ms ease-out;
+    transition: 
+      transform var(--duration-normal) var(--ease-bounce),
+      box-shadow var(--duration-normal) var(--ease-entrance),
+      border-color var(--duration-interactive) var(--ease-interactive);
   }
   
   .hover-lift:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
     box-shadow: var(--shadow-lift);
   }
   
-  /* Skill pill hover effect */
+  /* Skill pill hover effect - bouncy scale */
   .skill-pill {
-    transition: transform 200ms ease-out, background-color 200ms ease-out, filter 200ms ease-out;
+    transition: 
+      transform var(--duration-interactive) var(--ease-bounce),
+      background-color var(--duration-fast) var(--ease-interactive),
+      box-shadow var(--duration-interactive) var(--ease-entrance);
   }
   
   .skill-pill:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 12px hsl(var(--primary) / 0.2);
   }
   
-  /* Contact link hover */
+  /* Contact link hover - smooth lift */
   .contact-link {
-    transition: transform 250ms ease-out, border-color 200ms ease-out;
+    transition: 
+      transform var(--duration-interactive) var(--ease-bounce),
+      border-color var(--duration-fast) var(--ease-interactive),
+      box-shadow var(--duration-interactive) var(--ease-entrance);
   }
   
   .contact-link:hover {
-    transform: scale(1.02);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 16px hsl(0 0% 0% / 0.3);
   }
   
-  /* Nav link underline animation */
+  /* Nav link underline animation - bouncy slide */
   .nav-link-underline {
     position: relative;
   }
@@ -229,24 +307,23 @@
   .nav-link-underline::after {
     content: '';
     position: absolute;
-    bottom: -2px;
+    bottom: -4px;
     left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: hsl(var(--foreground));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 250ms ease-out;
+    width: 0;
+    height: 2px;
+    background-color: hsl(var(--primary));
+    transition: width var(--duration-normal) var(--ease-bounce);
   }
   
-  .nav-link-underline:hover::after {
-    transform: scaleX(1);
+  .nav-link-underline:hover::after,
+  .nav-link-underline.active::after {
+    width: 100%;
   }
   
   /* Achievement card border glow effect */
   .achievement-item {
     position: relative;
-    transition: background-color 200ms ease-out;
+    transition: background-color var(--duration-fast) var(--ease-interactive);
   }
   
   .achievement-item::before {
@@ -258,30 +335,93 @@
     width: 2px;
     background-color: hsl(var(--primary));
     opacity: 0;
-    transition: opacity 250ms ease-out, box-shadow 250ms ease-out;
+    transition: 
+      opacity var(--duration-interactive) var(--ease-entrance),
+      box-shadow var(--duration-interactive) var(--ease-entrance);
   }
   
   .achievement-item:hover::before {
     opacity: 1;
-    box-shadow: 0 0 8px hsl(var(--primary) / 0.5);
+    box-shadow: 0 0 12px hsl(var(--primary) / 0.6);
+  }
+  
+  .achievement-item:hover {
+    background-color: hsl(var(--card) / 0.8);
   }
 
   /* Icon rotation for buttons */
   .icon-rotate {
-    transition: transform 300ms ease-out;
+    transition: transform var(--duration-interactive) var(--ease-bounce);
   }
   
   .group:hover .icon-rotate {
     transform: rotate(90deg);
   }
   
-  /* Social icon hover */
+  /* Social icon hover - bouncy and playful */
   .social-icon {
-    transition: transform 250ms ease-out, color 200ms ease-out;
+    transition: 
+      transform var(--duration-interactive) var(--ease-bounce),
+      color var(--duration-fast) var(--ease-interactive);
   }
   
   .social-icon:hover {
-    transform: scale(1.15) rotate(5deg);
+    transform: scale(1.2) rotate(8deg);
+  }
+
+  /* Button hover effects - subtle lift with shimmer */
+  .btn-hover {
+    position: relative;
+    overflow: hidden;
+    transition: 
+      transform var(--duration-interactive) var(--ease-interactive),
+      box-shadow var(--duration-interactive) var(--ease-entrance);
+  }
+
+  .btn-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--foreground) / 0.05),
+      transparent
+    );
+    transition: left var(--duration-smooth) var(--ease-interactive);
+  }
+
+  .btn-hover:hover::before {
+    left: 100%;
+  }
+
+  .btn-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px hsl(var(--primary) / 0.25);
+  }
+
+  .btn-hover:active {
+    transform: translateY(0);
+    transition-duration: 100ms;
+  }
+
+  /* Card expand animation */
+  .card-expand {
+    transition: 
+      grid-template-rows var(--duration-normal) var(--ease-entrance),
+      opacity var(--duration-normal) var(--ease-entrance);
+  }
+
+  /* Arrow bounce on hover */
+  .arrow-bounce {
+    transition: transform var(--duration-fast) var(--ease-interactive);
+  }
+
+  .group:hover .arrow-bounce {
+    animation: arrowBounce 1s var(--ease-bounce) infinite;
   }
 }
 
@@ -315,10 +455,62 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes slideUpScale {
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideDownScale {
+  to {
+    opacity: 0;
+    transform: translateY(40px) scale(0.97);
+  }
+}
+
+/* Section divider animation */
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.section-divider {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--primary) / 0.5),
+    transparent
+  );
+}
+
+.section-divider.active {
+  animation: expandWidth 1200ms var(--ease-entrance) forwards;
 }
