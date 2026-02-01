@@ -1,4 +1,6 @@
 import { Mail, Github, Linkedin } from "lucide-react";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { cn } from "@/lib/utils";
 
 const contactLinks = [
   {
@@ -22,19 +24,42 @@ const contactLinks = [
 ];
 
 const ContactSection = () => {
+  const [sectionRef, isVisible] = useScrollReveal<HTMLElement>();
+
   return (
-    <section id="contact" className="py-24 px-6 md:px-12 lg:px-24 bg-card/50">
+    <section 
+      ref={sectionRef}
+      id="contact" 
+      className="py-24 px-6 md:px-12 lg:px-24 bg-card/50"
+    >
       <div className="max-w-2xl mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+        <h2 
+          className={cn(
+            "text-2xl md:text-3xl font-semibold text-foreground mb-4 reveal",
+            isVisible && "active"
+          )}
+        >
           Get in Touch
         </h2>
         
-        <p className="text-muted-foreground mb-12">
+        <p 
+          className={cn(
+            "text-muted-foreground mb-12 reveal",
+            isVisible && "active"
+          )}
+          style={{ transitionDelay: "100ms" }}
+        >
           Open to interesting projects, collaborations, and conversations about AI engineering.
         </p>
         
-        <div className="flex flex-col sm:flex-row justify-center gap-6">
-          {contactLinks.map((link) => {
+        <div 
+          className={cn(
+            "flex flex-col sm:flex-row justify-center gap-6 reveal",
+            isVisible && "active"
+          )}
+          style={{ transitionDelay: "200ms" }}
+        >
+          {contactLinks.map((link, index) => {
             const Icon = link.icon;
             return (
               <a
@@ -42,10 +67,11 @@ const ContactSection = () => {
                 href={link.href}
                 target={link.href.startsWith("mailto") ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-3 px-6 py-3 border border-border bg-background hover:border-muted-foreground/50 transition-all duration-200"
+                className="group flex items-center justify-center gap-3 px-6 py-3 border border-border bg-background contact-link hover:border-muted-foreground/50"
+                style={{ transitionDelay: `${250 + index * 80}ms` }}
               >
-                <Icon className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" />
-                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                <Icon className="h-5 w-5 text-muted-foreground social-icon group-hover:text-primary" />
+                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-200">
                   {link.label}
                 </span>
               </a>

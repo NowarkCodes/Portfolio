@@ -1,3 +1,5 @@
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { cn } from "@/lib/utils";
 import ProjectCard from "./ProjectCard";
 
 const projects = [
@@ -84,16 +86,33 @@ const projects = [
 ];
 
 const ProjectsSection = () => {
+  const [sectionRef, isVisible] = useScrollReveal<HTMLElement>();
+
   return (
-    <section id="projects" className="py-24 px-6 md:px-12 lg:px-24">
+    <section 
+      ref={sectionRef}
+      id="projects" 
+      className="py-24 px-6 md:px-12 lg:px-24"
+    >
       <div className="max-w-6xl">
-        <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-12">
+        <h2 
+          className={cn(
+            "text-2xl md:text-3xl font-semibold text-foreground mb-12 reveal",
+            isVisible && "active"
+          )}
+        >
           Projects
         </h2>
         
         <div className="grid md:grid-cols-2 gap-6">
-          {projects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
+          {projects.map((project, index) => (
+            <div
+              key={project.title}
+              className={cn("reveal", isVisible && "active")}
+              style={{ transitionDelay: `${150 + index * 100}ms` }}
+            >
+              <ProjectCard project={project} index={index} />
+            </div>
           ))}
         </div>
       </div>

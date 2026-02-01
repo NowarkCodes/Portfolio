@@ -13,31 +13,32 @@ const HeroSection = () => {
           Alex Chen
         </h1>
         
-        <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-8 animate-fade-in-up animate-delay-100">
+        <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-8 animate-fade-in-up animate-delay-200">
           Building intelligent systems, products, and tools.
         </p>
         
-        <p className="text-base md:text-lg text-muted-foreground max-w-2xl mb-12 leading-relaxed animate-fade-in-up animate-delay-200">
+        <p className="text-base md:text-lg text-muted-foreground max-w-2xl mb-12 leading-relaxed animate-fade-in-up animate-delay-300">
           AI engineer focused on building production-ready systems that solve real problems. 
           I specialize in LLM applications, backend architecture, and turning complex technical 
           challenges into elegant solutions.
         </p>
         
-        <div className="flex flex-wrap gap-4 animate-fade-in-up animate-delay-300">
+        <div className="flex flex-wrap gap-4 animate-fade-in-up animate-delay-400">
           <Button 
             variant="outline" 
             size="lg"
             onClick={scrollToProjects}
-            className="group"
+            className="group transition-all duration-200 hover:scale-[1.02]"
           >
             View Projects
-            <ArrowDown className="ml-2 h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+            <ArrowDown className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-y-1" />
           </Button>
           
           <Button 
             variant="ghost" 
             size="lg"
             asChild
+            className="transition-all duration-200 hover:scale-[1.02]"
           >
             <a 
               href="https://github.com" 
