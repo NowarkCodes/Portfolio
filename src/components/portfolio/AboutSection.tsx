@@ -1,12 +1,32 @@
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { cn } from "@/lib/utils";
+
 const AboutSection = () => {
+  const [sectionRef, isVisible] = useScrollReveal<HTMLElement>();
+
   return (
-    <section id="about" className="py-24 px-6 md:px-12 lg:px-24">
+    <section 
+      ref={sectionRef}
+      id="about" 
+      className="py-24 px-6 md:px-12 lg:px-24"
+    >
       <div className="max-w-3xl">
-        <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-8">
+        <h2 
+          className={cn(
+            "text-2xl md:text-3xl font-semibold text-foreground mb-8 reveal",
+            isVisible && "active"
+          )}
+        >
           About
         </h2>
         
-        <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <div 
+          className={cn(
+            "space-y-6 text-muted-foreground leading-relaxed reveal",
+            isVisible && "active"
+          )}
+          style={{ transitionDelay: "150ms" }}
+        >
           <p>
             I approach engineering as a craft—every system I build should be robust, 
             maintainable, and genuinely useful. My focus is on AI/ML systems, particularly 

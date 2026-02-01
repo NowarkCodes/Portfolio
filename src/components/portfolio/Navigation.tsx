@@ -11,13 +11,26 @@ const navLinks = [
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      
+      // Determine active section
+      const sections = navLinks.map(link => link.href.slice(1));
+      const scrollPosition = window.scrollY + 100;
+      
+      for (const section of sections.reverse()) {
+        const element = document.getElementById(section);
+        if (element && element.offsetTop <= scrollPosition) {
+          setActiveSection(section);
+          break;
+        }
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -41,7 +54,7 @@ const Navigation = () => {
       <div className="max-w-6xl flex items-center justify-between">
         <a 
           href="#" 
-          className="text-lg font-semibold text-foreground hover:text-primary transition-colors"
+          className="text-lg font-semibold text-foreground hover:text-primary transition-colors duration-200"
           onClick={(e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
@@ -56,7 +69,12 @@ const Navigation = () => {
               key={link.href}
               href={link.href}
               onClick={(e) => handleClick(e, link.href)}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className={cn(
+                "text-sm transition-colors duration-200 nav-link-underline",
+                activeSection === link.href.slice(1) 
+                  ? "text-foreground" 
+                  : "text-muted-foreground hover:text-foreground"
+              )}
             >
               {link.label}
             </a>

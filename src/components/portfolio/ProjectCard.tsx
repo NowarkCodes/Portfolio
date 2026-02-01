@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Github, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
+import { Github, ExternalLink, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -20,22 +20,27 @@ interface Project {
 
 interface ProjectCardProps {
   project: Project;
+  index?: number;
 }
 
-const ProjectCard = ({ project }: ProjectCardProps) => {
+const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  // Calculate stagger delay (max 5 items staggered)
+  const staggerDelay = index < 5 ? index * 100 : 0;
 
   return (
     <div 
       className={cn(
-        "group border border-border bg-card p-6 transition-all duration-300",
-        "hover:border-muted-foreground/30 hover:shadow-[var(--shadow-lift)]",
+        "group border border-border bg-card p-6 hover-lift",
+        "hover:border-muted-foreground/30",
         isExpanded && "border-muted-foreground/30"
       )}
+      style={{ transitionDelay: `${staggerDelay}ms` }}
     >
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-1">
+          <h3 className="text-lg font-semibold text-foreground mb-1 transition-colors duration-200 group-hover:text-primary">
             {project.title}
           </h3>
           <p className="text-sm text-muted-foreground">
@@ -51,7 +56,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           {project.tech.map((tech) => (
             <span 
               key={tech}
-              className="px-2 py-1 text-xs font-mono bg-secondary text-secondary-foreground"
+              className="px-2 py-1 text-xs font-mono bg-secondary text-secondary-foreground skill-pill"
             >
               {tech}
             </span>
@@ -60,7 +65,12 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         
         <div className="flex items-center gap-3 pt-2">
           {project.github && (
-            <Button variant="ghost" size="sm" asChild className="h-8 px-3">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              asChild 
+              className="h-8 px-3 transition-all duration-200 hover:bg-primary/10"
+            >
               <a href={project.github} target="_blank" rel="noopener noreferrer">
                 <Github className="h-4 w-4 mr-1.5" />
                 Code
@@ -68,7 +78,12 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             </Button>
           )}
           {project.demo && (
-            <Button variant="ghost" size="sm" asChild className="h-8 px-3">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              asChild 
+              className="h-8 px-3 transition-all duration-200 hover:bg-primary/10"
+            >
               <a href={project.demo} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-4 w-4 mr-1.5" />
                 Demo
@@ -79,18 +94,18 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="h-8 px-3 ml-auto"
+              className="h-8 px-3 ml-auto transition-all duration-200"
               onClick={() => setIsExpanded(!isExpanded)}
             >
               {isExpanded ? (
                 <>
                   Less
-                  <ChevronUp className="h-4 w-4 ml-1" />
+                  <X className="h-4 w-4 ml-1 icon-rotate" />
                 </>
               ) : (
                 <>
                   More
-                  <ChevronDown className="h-4 w-4 ml-1" />
+                  <ChevronDown className="h-4 w-4 ml-1 transition-transform duration-200 group-hover:translate-y-0.5" />
                 </>
               )}
             </Button>
@@ -98,37 +113,46 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         </div>
       </div>
       
-      {isExpanded && project.details && (
-        <div className="mt-6 pt-6 border-t border-border space-y-4">
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">The Problem</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {project.details.problem}
-            </p>
-          </div>
-          
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">Technical Approach</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {project.details.approach}
-            </p>
-          </div>
-          
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">Implementation</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {project.details.implementation}
-            </p>
-          </div>
-          
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">Outcomes & Learnings</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {project.details.outcomes}
-            </p>
-          </div>
+      <div 
+        className={cn(
+          "grid transition-all duration-350 ease-out",
+          isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        )}
+      >
+        <div className="overflow-hidden">
+          {project.details && (
+            <div className="mt-6 pt-6 border-t border-border space-y-4">
+              <div>
+                <h4 className="text-sm font-semibold text-foreground mb-2">The Problem</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.details.problem}
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-semibold text-foreground mb-2">Technical Approach</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.details.approach}
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-semibold text-foreground mb-2">Implementation</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.details.implementation}
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-semibold text-foreground mb-2">Outcomes & Learnings</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.details.outcomes}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
