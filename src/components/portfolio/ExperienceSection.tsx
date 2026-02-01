@@ -63,13 +63,25 @@ const ExperienceSection = () => {
                   "group flex gap-4 p-4 -mx-4 achievement-item reveal-left",
                   isVisible && "active"
                 )}
-                style={{ transitionDelay: `${150 + index * 100}ms` }}
+                style={{ transitionDelay: `${200 + index * 120}ms` }}
               >
                 <div className="flex-shrink-0 mt-1">
-                  <Icon className="h-5 w-5 text-primary transition-transform duration-200 group-hover:scale-110" />
+                  <Icon 
+                    className="h-5 w-5 text-primary transition-transform group-hover:scale-110"
+                    style={{
+                      transitionDuration: "var(--duration-interactive)",
+                      transitionTimingFunction: "var(--ease-bounce)"
+                    }}
+                  />
                 </div>
                 <div>
-                  <h3 className="font-medium text-foreground mb-1 transition-colors duration-200 group-hover:text-primary">
+                  <h3 
+                    className="font-medium text-foreground mb-1 transition-colors group-hover:text-primary"
+                    style={{
+                      transitionDuration: "var(--duration-fast)",
+                      transitionTimingFunction: "var(--ease-interactive)"
+                    }}
+                  >
                     {achievement.link ? (
                       <a 
                         href={achievement.link} 

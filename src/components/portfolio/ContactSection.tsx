@@ -47,7 +47,7 @@ const ContactSection = () => {
             "text-muted-foreground mb-12 reveal",
             isVisible && "active"
           )}
-          style={{ transitionDelay: "100ms" }}
+          style={{ transitionDelay: "150ms" }}
         >
           Open to interesting projects, collaborations, and conversations about AI engineering.
         </p>
@@ -57,7 +57,7 @@ const ContactSection = () => {
             "flex flex-col sm:flex-row justify-center gap-6 reveal",
             isVisible && "active"
           )}
-          style={{ transitionDelay: "200ms" }}
+          style={{ transitionDelay: "300ms" }}
         >
           {contactLinks.map((link, index) => {
             const Icon = link.icon;
@@ -68,10 +68,16 @@ const ContactSection = () => {
                 target={link.href.startsWith("mailto") ? undefined : "_blank"}
                 rel="noopener noreferrer"
                 className="group flex items-center justify-center gap-3 px-6 py-3 border border-border bg-background contact-link hover:border-muted-foreground/50"
-                style={{ transitionDelay: `${250 + index * 80}ms` }}
+                style={{ transitionDelay: `${350 + index * 100}ms` }}
               >
                 <Icon className="h-5 w-5 text-muted-foreground social-icon group-hover:text-primary" />
-                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-200">
+                <span 
+                  className="text-sm text-muted-foreground group-hover:text-foreground transition-colors"
+                  style={{
+                    transitionDuration: "var(--duration-fast)",
+                    transitionTimingFunction: "var(--ease-interactive)"
+                  }}
+                >
                   {link.label}
                 </span>
               </a>

@@ -3,42 +3,45 @@ import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
   const scrollToProjects = () => {
-    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+    const element = document.getElementById("projects");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
     <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24">
       <div className="max-w-4xl">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground mb-6 animate-fade-in-up">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground mb-6 hero-name">
           Alex Chen
         </h1>
         
-        <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-8 animate-fade-in-up animate-delay-200">
+        <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-8 hero-tagline">
           Building intelligent systems, products, and tools.
         </p>
         
-        <p className="text-base md:text-lg text-muted-foreground max-w-2xl mb-12 leading-relaxed animate-fade-in-up animate-delay-300">
+        <p className="text-base md:text-lg text-muted-foreground max-w-2xl mb-12 leading-relaxed hero-description">
           AI engineer focused on building production-ready systems that solve real problems. 
           I specialize in LLM applications, backend architecture, and turning complex technical 
           challenges into elegant solutions.
         </p>
         
-        <div className="flex flex-wrap gap-4 animate-fade-in-up animate-delay-400">
+        <div className="flex flex-wrap gap-4 hero-cta">
           <Button 
             variant="outline" 
             size="lg"
             onClick={scrollToProjects}
-            className="group transition-all duration-200 hover:scale-[1.02]"
+            className="group btn-hover"
           >
             View Projects
-            <ArrowDown className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-y-1" />
+            <ArrowDown className="ml-2 h-4 w-4 arrow-bounce" />
           </Button>
           
           <Button 
             variant="ghost" 
             size="lg"
             asChild
-            className="transition-all duration-200 hover:scale-[1.02]"
+            className="btn-hover"
           >
             <a 
               href="https://github.com" 

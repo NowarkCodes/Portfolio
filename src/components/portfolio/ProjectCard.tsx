@@ -27,20 +27,20 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   
   // Calculate stagger delay (max 5 items staggered)
-  const staggerDelay = index < 5 ? index * 100 : 0;
+  const staggerDelay = index < 5 ? index * 120 : 0;
 
   return (
     <div 
       className={cn(
         "group border border-border bg-card p-6 hover-lift",
-        "hover:border-muted-foreground/30",
-        isExpanded && "border-muted-foreground/30"
+        "hover:border-muted-foreground/40",
+        isExpanded && "border-muted-foreground/40"
       )}
       style={{ transitionDelay: `${staggerDelay}ms` }}
     >
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-1 transition-colors duration-200 group-hover:text-primary">
+          <h3 className="text-lg font-semibold text-foreground mb-1 transition-colors duration-300 group-hover:text-primary">
             {project.title}
           </h3>
           <p className="text-sm text-muted-foreground">
@@ -69,7 +69,7 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
               variant="ghost" 
               size="sm" 
               asChild 
-              className="h-8 px-3 transition-all duration-200 hover:bg-primary/10"
+              className="h-8 px-3 btn-hover"
             >
               <a href={project.github} target="_blank" rel="noopener noreferrer">
                 <Github className="h-4 w-4 mr-1.5" />
@@ -82,7 +82,7 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
               variant="ghost" 
               size="sm" 
               asChild 
-              className="h-8 px-3 transition-all duration-200 hover:bg-primary/10"
+              className="h-8 px-3 btn-hover"
             >
               <a href={project.demo} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-4 w-4 mr-1.5" />
@@ -94,7 +94,14 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="h-8 px-3 ml-auto transition-all duration-200"
+              className={cn(
+                "h-8 px-3 ml-auto transition-all",
+                "hover:bg-primary/10"
+              )}
+              style={{ 
+                transitionDuration: "var(--duration-interactive)",
+                transitionTimingFunction: "var(--ease-interactive)"
+              }}
               onClick={() => setIsExpanded(!isExpanded)}
             >
               {isExpanded ? (
@@ -105,7 +112,16 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
               ) : (
                 <>
                   More
-                  <ChevronDown className="h-4 w-4 ml-1 transition-transform duration-200 group-hover:translate-y-0.5" />
+                  <ChevronDown 
+                    className={cn(
+                      "h-4 w-4 ml-1 transition-transform",
+                      "group-hover:translate-y-0.5"
+                    )}
+                    style={{ 
+                      transitionDuration: "var(--duration-fast)",
+                      transitionTimingFunction: "var(--ease-interactive)"
+                    }}
+                  />
                 </>
               )}
             </Button>
@@ -115,13 +131,18 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
       
       <div 
         className={cn(
-          "grid transition-all duration-350 ease-out",
+          "grid card-expand",
           isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         )}
       >
         <div className="overflow-hidden">
           {project.details && (
-            <div className="mt-6 pt-6 border-t border-border space-y-4">
+            <div 
+              className="mt-6 pt-6 border-t border-border space-y-4"
+              style={{
+                animation: isExpanded ? "slideUpScale 400ms var(--ease-entrance) forwards" : "none"
+              }}
+            >
               <div>
                 <h4 className="text-sm font-semibold text-foreground mb-2">The Problem</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">

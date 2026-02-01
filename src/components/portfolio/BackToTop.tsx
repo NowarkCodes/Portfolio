@@ -8,8 +8,10 @@ const BackToTop = () => {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      setIsVisible(scrollPercent > 50);
+      // Show button when scrolled 30% down the page
+      const scrolled = window.scrollY;
+      const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setIsVisible(scrolled > pageHeight * 0.3);
     };
 
     window.addEventListener("scroll", toggleVisibility, { passive: true });
@@ -28,12 +30,15 @@ const BackToTop = () => {
       className={cn(
         "fixed bottom-8 right-8 z-40 h-10 w-10 rounded-full",
         "border-border bg-background/80 backdrop-blur-sm",
-        "transition-all duration-300 ease-out",
-        "hover:border-muted-foreground/50 hover:-translate-y-1",
+        "btn-hover",
         isVisible 
           ? "opacity-100 translate-y-0" 
           : "opacity-0 translate-y-4 pointer-events-none"
       )}
+      style={{
+        transitionDuration: "var(--duration-interactive)",
+        transitionTimingFunction: "var(--ease-entrance)"
+      }}
       aria-label="Back to top"
     >
       <ArrowUp className="h-4 w-4" />

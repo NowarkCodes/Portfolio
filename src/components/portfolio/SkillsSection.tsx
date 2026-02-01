@@ -48,7 +48,7 @@ const SkillsSection = () => {
             <div 
               key={category.title}
               className={cn("reveal", isVisible && "active")}
-              style={{ transitionDelay: `${150 + categoryIndex * 120}ms` }}
+              style={{ transitionDelay: `${200 + categoryIndex * 150}ms` }}
             >
               <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">
                 {category.title}
@@ -63,7 +63,7 @@ const SkillsSection = () => {
                       isVisible && "active"
                     )}
                     style={{ 
-                      transitionDelay: `${200 + categoryIndex * 120 + skillIndex * 50}ms` 
+                      transitionDelay: `${300 + categoryIndex * 150 + skillIndex * 60}ms` 
                     }}
                   >
                     {skill}
